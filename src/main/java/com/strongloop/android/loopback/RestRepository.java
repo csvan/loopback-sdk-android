@@ -1,12 +1,10 @@
 package com.strongloop.android.loopback;
 
-import android.content.Context;
-
 import com.strongloop.android.remoting.Repository;
 import com.strongloop.android.remoting.VirtualObject;
 import com.strongloop.android.remoting.adapters.RestContract;
 
-public class RestRepository<T extends VirtualObject> extends Repository<T>{
+public class RestRepository<T extends VirtualObject> extends Repository<T> {
     public RestRepository(String className) {
         super(className);
     }
@@ -21,9 +19,5 @@ public class RestRepository<T extends VirtualObject> extends Repository<T>{
 
     public RestAdapter getRestAdapter() {
         return (RestAdapter) getAdapter();
-    }
-
-    protected Context getApplicationContext() {
-        return getRestAdapter().getApplicationContext();
     }
 }
