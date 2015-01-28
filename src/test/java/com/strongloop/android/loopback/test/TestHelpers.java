@@ -1,15 +1,8 @@
 package com.strongloop.android.loopback.test;
 
-import android.util.Log;
-
 import com.google.common.collect.ImmutableSet;
-import com.strongloop.android.loopback.Container;
-import com.strongloop.android.loopback.ContainerRepository;
-import com.strongloop.android.loopback.RestAdapter;
-
 import org.json.JSONObject;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
