@@ -1,6 +1,6 @@
 package com.strongloop.android.remoting;
 
-import android.util.Log;
+import com.strongloop.android.util.Log;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -59,7 +59,7 @@ public class BeanUtil {
                 try {
                     setter.invoke(object, value);
                 } catch (Exception e) {
-                    Log.e("BeanUtil", setterName + "() failed", e);
+                    Log.getLogger().severe("BeanUtil: " + setterName + "() failed " + e.getMessage());
                 }
             }
         }
@@ -93,7 +93,7 @@ public class BeanUtil {
                 try {
                     value = method.invoke(object);
                 } catch (Exception e) {
-                    Log.e("BeanUtil", method.getName() + "() failed", e);
+                    Log.getLogger().severe("BeanUtil: " + method.getName() + "() failed: " + e.getMessage());
                 }
 
                 if (!deepCopy) {
