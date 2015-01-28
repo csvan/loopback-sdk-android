@@ -1,18 +1,11 @@
 package com.strongloop.android.loopback;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 import com.strongloop.android.remoting.JsonUtil;
 import com.strongloop.android.remoting.adapters.Adapter;
 import com.strongloop.android.remoting.adapters.RestContract;
 import com.strongloop.android.remoting.adapters.RestContractItem;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -91,14 +84,14 @@ public class UserRepository<U extends User> extends ModelRepository<U> {
      * @return Id of the currently logged in user. null when there is no user logged in.
      */
     public Object getCurrentUserId() {
-        loadCurrentUserIdIfNotLoaded();
+        //loadCurrentUserIdIfNotLoaded();
         return currentUserId;
     }
 
     protected void setCurrentUserId(Object currentUserId) {
         this.currentUserId = currentUserId;
         cachedCurrentUser = null;
-        saveCurrentUserId();
+        //saveCurrentUserId();
     }
 
     /**
@@ -281,6 +274,9 @@ public class UserRepository<U extends User> extends ModelRepository<U> {
         });
     }
 
+    // TODO: Fix local user storage if necessary.
+
+    /*
     private void saveCurrentUserId() {
         final SharedPreferences.Editor editor = getSharedPreferences().edit();
         final String json = new JSONArray().put(getCurrentUserId()).toString();
@@ -300,7 +296,7 @@ public class UserRepository<U extends User> extends ModelRepository<U> {
             setCurrentUserId(id);
         } catch (JSONException e) {
             String msg = "Cannot parse current user id '" + json + "'";
-            Log.e("LoopBack", msg, e);
+            Log.getLogger().severe("LoopBack: " + msg + " " + e.getMessage());
         }
     }
 
@@ -309,5 +305,6 @@ public class UserRepository<U extends User> extends ModelRepository<U> {
                 SHARED_PREFERENCES_NAME,
                 Context.MODE_PRIVATE);
     }
+    */
 
 }
