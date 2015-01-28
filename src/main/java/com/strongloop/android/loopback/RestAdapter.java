@@ -2,9 +2,6 @@
 
 package com.strongloop.android.loopback;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 /**
  * An extension to the vanilla
  * {@link com.strongloop.android.remoting.adapters.RestAdapter}
@@ -14,16 +11,13 @@ import android.content.SharedPreferences;
 public class RestAdapter
         extends com.strongloop.android.remoting.adapters.RestAdapter {
 
-    public static final String SHARED_PREFERENCES_NAME =
-            RestAdapter.class.getCanonicalName();
+    public static final String SHARED_PREFERENCES_NAME = RestAdapter.class.getCanonicalName();
     public static final String PROPERTY_ACCESS_TOKEN = "accessToken";
 
-    private final Context context;
+    private String accessToken;
 
-    public RestAdapter(Context context, String url) {
-        super(context, url);
-        if (context == null) throw new NullPointerException("context must be not null");
-        this.context = context;
+    public RestAdapter(String url) {
+        super(url);
         setAccessToken(loadAccessToken());
     }
 
@@ -36,12 +30,9 @@ public class RestAdapter
         getClient().addHeader("Authorization", null);
     }
 
-    public Context getApplicationContext() {
-        return context;
-    }
-
     /**
      * Creates a new {@link ModelRepository} representing the named model type.
+     *
      * @param name The model name.
      * @return A new repository instance.
      */
@@ -51,7 +42,8 @@ public class RestAdapter
 
     /**
      * Creates a new {@link ModelRepository} representing the named model type.
-     * @param name The model name.
+     *
+     * @param name           The model name.
      * @param nameForRestUrl The model name to use in REST URL, usually the plural form of `name`.
      * @return A new repository instance.
      */
@@ -61,15 +53,16 @@ public class RestAdapter
 
     /**
      * Creates a new {@link ModelRepository} representing the named model type.
-     * @param name The model name.
+     *
+     * @param name           The model name.
      * @param nameForRestUrl The model name to use in REST URL, usually the plural form of `name`.
-     * @param modelClass The model class. The class must have a public
-     * no-argument constructor.
+     * @param modelClass     The model class. The class must have a public
+     *                       no-argument constructor.
      * @return A new repository instance.
      */
     public <T extends Model> ModelRepository<T> createRepository(String name,
-                                               String nameForRestUrl,
-                                               Class<T> modelClass) {
+                                                                 String nameForRestUrl,
+                                                                 Class<T> modelClass) {
         ModelRepository<T> repository = new ModelRepository<T>(name, nameForRestUrl, modelClass);
         attachModelRepository(repository);
         return repository;
@@ -77,8 +70,9 @@ public class RestAdapter
 
     /**
      * Creates a new {@link ModelRepository} from the given subclass.
+     *
      * @param repositoryClass A subclass of {@link ModelRepository} to use.
-     * The class must have a public no-argument constructor.
+     *                        The class must have a public no-argument constructor.
      * @return A new repository instance.
      */
     public <U extends RestRepository> U createRepository(
@@ -87,8 +81,7 @@ public class RestAdapter
         try {
             repository = repositoryClass.newInstance();
             repository.setAdapter(this);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             IllegalArgumentException ex = new IllegalArgumentException();
             ex.initCause(e);
             throw ex;
@@ -104,18 +97,11 @@ public class RestAdapter
     }
 
     private void saveAccessToken(String accessToken) {
-        final SharedPreferences.Editor editor = getSharedPreferences().edit();
-        editor.putString(PROPERTY_ACCESS_TOKEN, accessToken);
-        editor.commit();
+        // TODO: Save to more permanent cache
+        this.accessToken = accessToken;
     }
 
     private String loadAccessToken() {
-        return getSharedPreferences().getString(PROPERTY_ACCESS_TOKEN, null);
-    }
-
-    private SharedPreferences getSharedPreferences() {
-        return context.getSharedPreferences(
-                SHARED_PREFERENCES_NAME,
-                Context.MODE_PRIVATE);
+        return accessToken;
     }
 }

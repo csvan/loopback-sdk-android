@@ -2,15 +2,8 @@ package com.strongloop.android.loopback;
 
 import java.util.TimeZone;
 
-import org.apache.http.client.HttpResponseException;
 import org.json.JSONArray;
 import org.json.JSONException;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.util.Log;
 
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 import com.strongloop.android.remoting.BeanUtil;
@@ -19,37 +12,37 @@ import com.strongloop.android.remoting.BeanUtil;
  * This class represents the Installation instance assigned to
  * the installation of the Android application that is running
  * this code.
- *
+ * <p/>
  * Certain properties are cached in {@link android.content.SharedPreferences}
  * to prevent duplicate registrations.
- *
+ * <p/>
  * <pre>{@code
- *
+ * <p/>
  * public class MyActivity extends Activity {
- *
+ * <p/>
  * // This method must be called from onCreate() method every time
  * // the application starts. See the example Android application
  * // in loopback-push-notification for more details.
  * private void updateRegistration() {
  *     final Context context = getApplicationContext();
- *
+ * <p/>
  *     // 1. Grab the shared RestAdapter instance.
  *     final DemoApplication app = (DemoApplication) getApplication();
  *     final RestAdapter adapter = app.getLoopBackAdapter();
- *
+ * <p/>
  *     // 2. Create LocalInstallation instance
  *     final LocalInstallation installation =
  *             new LocalInstallation(context, adapter);
- *
+ * <p/>
  *     // 3. Update Installation properties that were not pre-filled
- *
+ * <p/>
  *     // Enter the id of the application you registered in your LoopBack server
  *     // by calling Application.register()
  *     installation.setAppId(LOOPBACK_APP_ID);
- *
+ * <p/>
  *     // Substitute a real id of the user logged in this application
  *     installation.setUserId("loopback-android");
- *
+ * <p/>
  *     // 4. Check if we have a valid GCM registration id
  *     if (installation.getDeviceToken() != null) {
  *         // 5a. We have a valid GCM token, all we need to do now
@@ -61,7 +54,7 @@ import com.strongloop.android.remoting.BeanUtil;
  *         registerInBackground(installation);
  *     }
  * }
- *
+ * <p/>
  * private void registerInBackground(final LocalInstallation installation) {
  *     new AsyncTask<Void, Void, String>() {
  *         //Override
@@ -78,7 +71,7 @@ import com.strongloop.android.remoting.BeanUtil;
  *                 // exponential back-off.
  *             }
  *         }
- *
+ * <p/>
  *         //Override
  *         protected void onPostExecute(final String message) {
  *             saveInstallation(installation);
@@ -86,7 +79,7 @@ import com.strongloop.android.remoting.BeanUtil;
  *         }
  *     }.execute(null, null, null);
  * }
- *
+ * <p/>
  * void saveInstallation(final LocalInstallation installation) {
  *     installation.save(new Model.Callback() {
  *         //Override
@@ -114,7 +107,6 @@ public class LocalInstallation {
     private static final String PROPERTY_DEVICE_TOKEN = "deviceToken";
     private static final String PROPERTY_APP_VERSION = "appVersion";
 
-    private final Context applicationContext;
     private final RestAdapter loopbackAdapter;
 
     Object id;
@@ -140,6 +132,7 @@ public class LocalInstallation {
     public String getAppId() {
         return appId;
     }
+
     /**
      * See {@link LocalInstallation#getAppId()}.
      */
@@ -249,14 +242,12 @@ public class LocalInstallation {
     /**
      * Creates a new instance of LocalInstallation class. Your application
      * should never instantiate more than one instance.
-     * @param applicationContext The Android context of your application.
-     * @param loopbackAdapter The adapter to use for communication with
-     *                        the LoopBack server.
+     *
+     * @param loopbackAdapter    The adapter to use for communication with
+     *                           the LoopBack server.
      */
-    public LocalInstallation(Context applicationContext,
-                             RestAdapter loopbackAdapter) {
+    public LocalInstallation(RestAdapter loopbackAdapter) {
 
-        this.applicationContext = applicationContext;
         this.loopbackAdapter = loopbackAdapter;
         fillDefaults();
         loadSharedPreferences();
@@ -266,6 +257,7 @@ public class LocalInstallation {
      * Saves the Installation to the remote server. When called for the first
      * time, a new record is created and the id is stored in SharedPreferences.
      * Subsequent calls updates the existing record with the stored id.
+     *
      * @param callback The callback to be executed when finished.
      */
     public void save(final VoidCallback callback) {

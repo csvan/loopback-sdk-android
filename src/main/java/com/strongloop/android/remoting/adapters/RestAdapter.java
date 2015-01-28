@@ -51,7 +51,7 @@ public class RestAdapter extends Adapter {
      *
      * @return the client.
      */
-    protected AsyncHttpClient getClient() {
+    protected HttpClient getClient() {
         return client;
     }
 
@@ -275,7 +275,9 @@ public class RestAdapter extends Adapter {
         FORM_MULTIPART
     }
 
-    private static class HttpClient extends AsyncHttpClient {
+    public static class HttpClient extends AsyncHttpClient {
+
+        private Map<String, String> headers = new HashMap<>();
 
         private static String getVersionName() {
             String appVersion = null;
@@ -303,8 +305,12 @@ public class RestAdapter extends Adapter {
 
             String userAgent = appName + " (" + "Placeholder" + ")";
 
-            // TODO: Find better way of doing this
-            //setUserAgent(userAgent);
+            setUserAgent(userAgent);
+            addHeader("Accept", "application/json");
+        }
+
+        private void setUserAgent(String userAgent) {
+            addHeader("User-Agent", userAgent);
         }
 
         public void request(String method,
@@ -369,10 +375,13 @@ public class RestAdapter extends Adapter {
                 }
             }
 
-            request.addHeader("Accept", "application/json");
-
             //String url = uri.build().toString();
             //logRequest(method, url, body, requestParams);
+
+            // Set the headers
+            for (String header : headers.keySet()) {
+                request.addHeader(header, getHeader(header));
+            }
 
             if ("GET".equalsIgnoreCase(method)) {
                 request.execute();
@@ -460,6 +469,18 @@ public class RestAdapter extends Adapter {
             }
 
             return result;
+        }
+
+        public void addHeader(String key, String value) {
+            headers.put(key, value);
+        }
+
+        public String getHeader(String key) {
+            return headers.get(key);
+        }
+
+        public void removeHeader(String key) {
+            headers.remove(key);
         }
 
         /*
