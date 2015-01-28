@@ -2,14 +2,12 @@
 
 package com.strongloop.android.remoting.adapters;
 
-import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import android.content.Context;
+import java.util.Map;
 
 /**
  * The entry point to all networking accomplished with LoopBack. Adapters
@@ -150,17 +148,17 @@ public abstract class Adapter {
     /**
      * Creates a new, disconnected Adapter.
      */
-    public Adapter(Context context) {
-        this(context, null);
+    public Adapter() {
+        this(null);
     }
 
     /**
      * Creates a new Adapter, connecting it to `url`.
      * @param url The URL to connect to.
      */
-    public Adapter(Context context, String url) {
+    public Adapter(String url) {
         if (url != null) {
-            connect(context, url);
+            connect(url);
         }
     }
 
@@ -168,7 +166,7 @@ public abstract class Adapter {
      * Connects the Adapter to `url`.
      * @param url The URL to connect to.
      */
-    public abstract void connect(Context context, String url);
+    public abstract void connect(String url);
 
     /**
      * Gets whether this adapter is connected to a server.
