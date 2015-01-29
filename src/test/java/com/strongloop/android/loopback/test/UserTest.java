@@ -5,8 +5,11 @@ import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.User;
 import com.strongloop.android.loopback.UserRepository;
 import com.strongloop.android.util.Log;
+import org.junit.Test;
 
 import java.util.logging.Level;
+
+import static org.junit.Assert.*;
 
 public class UserTest extends AsyncTestCase {
 
@@ -36,7 +39,7 @@ public class UserTest extends AsyncTestCase {
     }
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         //testContext.clearSharedPreferences(CustomerRepository.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         adapter = createRestAdapter();
@@ -44,6 +47,7 @@ public class UserTest extends AsyncTestCase {
     }
 
     // create and save
+    @Test
     public void testCreateSave() throws Throwable {
 
         // create user
@@ -72,6 +76,7 @@ public class UserTest extends AsyncTestCase {
     }
 
     // login / logout
+    @Test
     public void testLoginLogout() throws Throwable {
         final Customer user = givenCustomer();
 
@@ -121,17 +126,20 @@ public class UserTest extends AsyncTestCase {
 
     }
 
+    @Test
     public void testSetsCurrentUserIdOnLogin() throws Throwable {
         Customer user = givenLoggedInCustomer();
         assertEquals(user.getId(), customerRepo.getCurrentUserId());
     }
 
+    @Test
     public void testClearsCurrentUserIdOnLogout() throws Throwable {
         givenLoggedInCustomer();
         logout();
         assertNull(customerRepo.getCurrentUserId());
     }
 
+    @Test
     public void testCurrentUserIdIsStoredInSharedPreferences() throws Throwable {
         Customer customer = givenLoggedInCustomer();
         CustomerRepository anotherRepo = adapter.createRepository(
@@ -140,6 +148,7 @@ public class UserTest extends AsyncTestCase {
         assertEquals(customer.getId(), anotherRepo.getCurrentUserId());
     }
 
+    @Test
     public void testFindCurrentUserReturnsCorrectValue() throws Throwable {
         final Customer customer = givenLoggedInCustomer();
 
@@ -158,6 +167,7 @@ public class UserTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testFindCurrentUserReturnsNullWhenNotLoggedIn() throws Throwable {
         doAsyncTest(new AsyncTest() {
             @Override
@@ -173,11 +183,13 @@ public class UserTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testGetCachedCurrentUserReturnsNullInitially() throws Throwable {
         Customer current = customerRepo.getCachedCurrentUser();
         assertNull(current);
     }
 
+    @Test
     public void testGetCachedCurrentUserReturnsValueLoadedByFindCurrentUser()
             throws Throwable {
         givenLoggedInCustomer();
@@ -187,6 +199,7 @@ public class UserTest extends AsyncTestCase {
         assertEquals(current, cached);
     }
 
+    @Test
     public void testGetCachedCurrentUserReturnsValueLoadedByLogin() throws Throwable {
         Customer current = givenLoggedInCustomer();
 
@@ -196,6 +209,7 @@ public class UserTest extends AsyncTestCase {
         assertEquals(current.getId(), cached.getId());
     }
 
+    @Test
     public void testCachedCurrentUserIsClearedOnLogout() throws Throwable {
         givenLoggedInCustomer();
         findCurrentUser();

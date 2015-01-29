@@ -7,6 +7,7 @@ import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 import com.strongloop.android.util.Log;
 import org.json.JSONObject;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import static com.strongloop.android.loopback.test.TestHelpers.assertPropertyNames;
+
+import static org.junit.Assert.*;
 
 public class ModelSubclassingTest extends AsyncTestCase {
 
@@ -50,12 +53,13 @@ public class ModelSubclassingTest extends AsyncTestCase {
     private WidgetRepository widgetRepository;
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         RestAdapter adapter = createRestAdapter();
         widgetRepository = adapter.createRepository(WidgetRepository.class);
     }
 
+    @Test
     public void testCreateAndRemove() throws Throwable {
         final Object[] lastId = new Object[1];
 
@@ -107,6 +111,7 @@ public class ModelSubclassingTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testFind() throws Throwable {
         doAsyncTest(new AsyncTest() {
 
@@ -127,6 +132,7 @@ public class ModelSubclassingTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testFindAll() throws Throwable {
         doAsyncTest(new AsyncTest() {
 
@@ -156,6 +162,7 @@ public class ModelSubclassingTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testUpdate() throws Throwable {
         doAsyncTest(new AsyncTest() {
 

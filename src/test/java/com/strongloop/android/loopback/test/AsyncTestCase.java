@@ -3,26 +3,30 @@ package com.strongloop.android.loopback.test;
 import com.strongloop.android.loopback.*;
 import com.strongloop.android.remoting.adapters.Adapter;
 import com.strongloop.android.remoting.adapters.Adapter.JsonObjectCallback;
-import junit.framework.TestCase;
 import org.json.JSONObject;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Convenience class to easily perform asynchronous JUnit tests in Android.
  */
-public class AsyncTestCase extends TestCase {
+public class AsyncTestCase {
 
     // NOTE: "10.0.2.2" is the "localhost" of the Android emulator's
     // host computer.
     public static final String REST_SERVER_URL = "http://10.0.2.2:3000";
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
     }
 
+    @Test
     protected RestAdapter createRestAdapter() {
         return new RestAdapter(REST_SERVER_URL);
     }

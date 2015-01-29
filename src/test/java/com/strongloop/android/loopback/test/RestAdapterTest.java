@@ -1,17 +1,21 @@
 package com.strongloop.android.loopback.test;
 
 import com.strongloop.android.loopback.RestAdapter;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class RestAdapterTest extends AsyncTestCase {
     private RestAdapter adapter;
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         //testContext.clearSharedPreferences(RestAdapter.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         adapter = createRestAdapter();
     }
 
+    @Test
     public void testAccessTokenIsStoredInSharedPreferences() {
         final String[] accessTokenRef = new String[1];
         adapter.setAccessToken("an-access-token");

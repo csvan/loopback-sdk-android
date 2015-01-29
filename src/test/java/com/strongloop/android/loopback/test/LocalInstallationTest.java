@@ -7,9 +7,12 @@ import com.strongloop.android.loopback.ModelRepository;
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.remoting.adapters.Adapter;
 import com.strongloop.android.util.Log;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.TimeZone;
+
+import static org.junit.Assert.*;
 
 public class LocalInstallationTest extends AsyncTestCase {
     private final static String TAG = LocalInstallationTest.class.getSimpleName();
@@ -17,7 +20,7 @@ public class LocalInstallationTest extends AsyncTestCase {
     private RestAdapter adapter;
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         adapter = createRestAdapter();
 
@@ -25,6 +28,7 @@ public class LocalInstallationTest extends AsyncTestCase {
         //testContext.clearSharedPreferences(LocalInstallation.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
+    @Test
     public void testConstructorFillsProperties() throws Throwable {
         //testContext.setPackageVersionName("1.2.3");
 
@@ -36,6 +40,7 @@ public class LocalInstallationTest extends AsyncTestCase {
         assertEquals(TimeZone.getDefault().getID(), install.getTimeZone());
     }
 
+    @Test
     public void testServerRoundTrip() throws Throwable {
         final LocalInstallation install = new LocalInstallation(adapter);
         final String[] subscriptions = {"all"};
@@ -72,6 +77,7 @@ public class LocalInstallationTest extends AsyncTestCase {
         assertEquals(subscriptions, subscriptionsFound);
     }
 
+    @Test
     public void testCachingOfInstallationId() throws Throwable {
         final LocalInstallation install = aLocalInstallation();
         doAsyncTest(new AsyncTest() {
@@ -85,6 +91,7 @@ public class LocalInstallationTest extends AsyncTestCase {
         assertEquals(install.getId(), copy.getId());
     }
 
+    @Test
     public void testCachingOfDeviceToken() throws Throwable {
         final LocalInstallation install = aLocalInstallation();
         install.setDeviceToken("a-device-token");
@@ -93,6 +100,7 @@ public class LocalInstallationTest extends AsyncTestCase {
         assertEquals(install.getDeviceToken(), copy.getDeviceToken());
     }
 
+    @Test
     public void testInvalidationOfDeviceTokenWithNewVersion() throws Throwable {
         //testContext.setPackageVersionCode(1);
         LocalInstallation install = aLocalInstallation();
@@ -104,6 +112,7 @@ public class LocalInstallationTest extends AsyncTestCase {
         assertNull(copy.getDeviceToken());
     }
 
+    @Test
     public void testRecoveryWhenRemoteWasDeleted() throws Throwable {
         final LocalInstallation install = aLocalInstallation();
 
