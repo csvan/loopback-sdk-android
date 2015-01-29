@@ -1,7 +1,7 @@
 # LoopBack Java SDK
 
-The Android Java SDK provides simple API calls that enable your Android app to access a
-[LoopBack](http://docs.strongloop.com/loopback) server application.  It enables you to interact with your 
+The Loopback Java SDK provides simple API calls that enable your Java (or compatible JVM language) application to access a
+[LoopBack](http://docs.strongloop.com/loopback) server instance.  It enables you to interact with your
 models and data sources using a comfortable, first-class Java interface instead 
 of using the clunky `AsyncHttpClient`, `JSONObject`, and similar interfaces.
 
