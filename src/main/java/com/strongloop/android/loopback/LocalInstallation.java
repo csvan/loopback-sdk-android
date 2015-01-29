@@ -1,12 +1,14 @@
 package com.strongloop.android.loopback;
 
-import java.util.TimeZone;
-
+import com.strongloop.android.loopback.callbacks.VoidCallback;
+import com.strongloop.android.remoting.BeanUtil;
+import com.strongloop.android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.strongloop.android.loopback.callbacks.VoidCallback;
-import com.strongloop.android.remoting.BeanUtil;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * This class represents the Installation instance assigned to
@@ -97,6 +99,7 @@ import com.strongloop.android.remoting.BeanUtil;
  */
 public class LocalInstallation {
 
+    private final Map<String, String> propertyStorage = new HashMap<>();
 
     public static final String DEVICE_TYPE_ANDROID = "android";
     public static final String STATUS_ACTIVE = "Active";
@@ -243,8 +246,8 @@ public class LocalInstallation {
      * Creates a new instance of LocalInstallation class. Your application
      * should never instantiate more than one instance.
      *
-     * @param loopbackAdapter    The adapter to use for communication with
-     *                           the LoopBack server.
+     * @param loopbackAdapter The adapter to use for communication with
+     *                        the LoopBack server.
      */
     public LocalInstallation(RestAdapter loopbackAdapter) {
 
@@ -276,6 +279,10 @@ public class LocalInstallation {
 
             @Override
             public void onError(Throwable t) {
+
+                // TODO: Handle this in a proper way
+
+                /*
                 if (t instanceof HttpResponseException) {
                     HttpResponseException ex = (HttpResponseException) t;
                     if (ex.getStatusCode() == 404 && id != null) {
@@ -286,63 +293,92 @@ public class LocalInstallation {
                         return;
                     }
                 }
+                */
+
                 callback.onError(t);
             }
         });
     }
 
     private void fillDefaults() {
+
+        // TODO: Provide better implementation
+        setAppVersion("1.0");
+
+        /*
         try {
             setAppVersion(getPackageInfo().versionName);
         } catch (final PackageManager.NameNotFoundException e) {
             // This should never happen, as it would mean the currently
             // running application is not installed on the device
         }
+        */
 
         setStatus(LocalInstallation.STATUS_ACTIVE);
         setTimeZone(TimeZone.getDefault().getID());
     }
 
     private void loadSharedPreferences() {
-        final SharedPreferences prefs = getSharedPreferences();
+
+        // TODO: Provide better implementation
+        //final SharedPreferences prefs = getSharedPreferences();
 
         // Get the stored Installation ID. We are storing the value
         // in a JSON array to preserve it's type (NoSQL databases usually
         // use String, SQL databases use Number).
-        final String idJson = prefs.getString(PROPERTY_INSTALLATION_ID, null);
+        final String idJson = propertyStorage.getOrDefault(PROPERTY_INSTALLATION_ID, null);
         if (idJson != null) {
             try {
                 id = new JSONArray(idJson).get(0);
             } catch (JSONException e) {
                 String msg = "Cannot parse installation id '" + idJson + "'";
-                Log.e("LoopBack", msg, e);
+                Log.getLogger().severe("LoopBack: " + msg + " " + e.getMessage());
             }
         }
 
         // Check if app was updated; if so, it must clear the device token
         // (the GCM registration ID) since the existing registration ID
         // is not guaranteed to work with the new app version.
-        int savedVersionCode = prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
+        int savedVersionCode = Integer.parseInt(propertyStorage.get(PROPERTY_APP_VERSION)); //prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
         int currentVersionCode = fetchAppVersionCode();
-        if (savedVersionCode == currentVersionCode)
-            deviceToken = prefs.getString(PROPERTY_DEVICE_TOKEN, null);
+        if (savedVersionCode == currentVersionCode) {
+            deviceToken = propertyStorage.getOrDefault(PROPERTY_DEVICE_TOKEN, null);
+        }
     }
 
     private void saveInstallationId() {
-        final SharedPreferences.Editor editor = getSharedPreferences().edit();
+
+        //final SharedPreferences.Editor editor = getSharedPreferences().edit();
+
+        // TODO: Provide better implementation
         final String json = new JSONArray().put(id).toString();
+        propertyStorage.put(PROPERTY_INSTALLATION_ID, json);
+
+        /*
         editor.putString(PROPERTY_INSTALLATION_ID, json);
         editor.commit();
+        */
     }
 
     private void saveDeviceToken() {
+
+        // TODO: Provide better implementation
+        propertyStorage.put(PROPERTY_DEVICE_TOKEN, getDeviceToken());
+        propertyStorage.put(PROPERTY_APP_VERSION, Integer.toString(fetchAppVersionCode()));
+
+        /*
         final SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putString(PROPERTY_DEVICE_TOKEN, getDeviceToken());
         editor.putInt(PROPERTY_APP_VERSION, fetchAppVersionCode());
         editor.commit();
+        */
     }
 
     private int fetchAppVersionCode() {
+
+        // TODO: Provide a better implementation for this
+        return Integer.MIN_VALUE;
+        /*
         try {
             return getPackageInfo().versionCode;
         } catch (final PackageManager.NameNotFoundException e) {
@@ -350,18 +386,23 @@ public class LocalInstallation {
             // running application is not installed on the device
             return Integer.MIN_VALUE;
         }
+        */
     }
 
+    /*
     @SuppressWarnings("ConstantConditions")
     private PackageInfo getPackageInfo()
             throws PackageManager.NameNotFoundException {
         return applicationContext.getPackageManager()
                 .getPackageInfo(applicationContext.getPackageName(), 0);
     }
+    */
 
+    /*
     private SharedPreferences getSharedPreferences() {
         return applicationContext.getSharedPreferences(
                 SHARED_PREFERENCES_NAME,
                 Context.MODE_PRIVATE);
     }
+    */
 }
