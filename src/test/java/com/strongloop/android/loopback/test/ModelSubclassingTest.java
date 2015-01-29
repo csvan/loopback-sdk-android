@@ -1,18 +1,17 @@
 package com.strongloop.android.loopback.test;
 
-import android.util.Log;
-
 import com.strongloop.android.loopback.Model;
-import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.ModelRepository;
+import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
-
+import com.strongloop.android.util.Log;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import static com.strongloop.android.loopback.test.TestHelpers.assertPropertyNames;
 
@@ -79,7 +78,7 @@ public class ModelSubclassingTest extends AsyncTestCase {
                     @Override
                     public void onSuccess() {
                         lastId[0] = model.getId();
-                        Log.i("ModelSubclassingTest", "id: " + model.getId());
+                        Log.getLogger().log(Level.FINE, "ModelSubclassingTest", "id: " + model.getId());
                         assertNotNull(model.getId());
                         notifyFinished();
                     }
