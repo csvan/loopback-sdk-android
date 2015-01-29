@@ -1,12 +1,12 @@
 package com.strongloop.android.loopback.test;
 
-import android.content.Context;
-import android.util.Log;
-
 import com.strongloop.android.loopback.AccessToken;
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.User;
 import com.strongloop.android.loopback.UserRepository;
+import com.strongloop.android.util.Log;
+
+import java.util.logging.Level;
 
 public class UserTest extends AsyncTestCase {
 
@@ -38,8 +38,7 @@ public class UserTest extends AsyncTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        testContext.clearSharedPreferences(
-                CustomerRepository.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        //testContext.clearSharedPreferences(CustomerRepository.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         adapter = createRestAdapter();
         customerRepo = adapter.createRepository(CustomerRepository.class);
     }
@@ -48,7 +47,7 @@ public class UserTest extends AsyncTestCase {
     public void testCreateSave() throws Throwable {
 
         // create user
-       final Customer user = customerRepo.createUser(userEmail, userPassword);
+        final Customer user = customerRepo.createUser(userEmail, userPassword);
 
         assertEquals(userEmail, user.getEmail());
         assertEquals(userPassword, user.getPassword());
@@ -63,7 +62,8 @@ public class UserTest extends AsyncTestCase {
                     @Override
                     public void onSuccess() {
                         assertNotNull(user.getId());
-                        Log.i("UserTest: create/save", "id: " + user.getId());
+
+                        Log.getLogger().info("UserTest: create/save, " + "id: " + user.getId());
                         notifyFinished();
                     }
                 });
@@ -95,11 +95,11 @@ public class UserTest extends AsyncTestCase {
                                 assertEquals("currentUser.email", currentUser.getEmail(), user.getEmail());
                                 assertNotNull("accessToken should be not null", token);
                                 assertEquals("userId", token.getUserId(), currentUser.getId());
-                                Log.i("UserTest", "login id: " + currentUser.getId());
+                                Log.getLogger().log(Level.FINE, "UserTest", "login id: " + currentUser.getId());
                                 notifyFinished();
                             }
                         });
-               }
+            }
 
         });
 
@@ -111,7 +111,7 @@ public class UserTest extends AsyncTestCase {
                 customerRepo.logout(new VoidTestCallback() {
                     @Override
                     public void onSuccess() {
-                        Log.i("UserTest", "logout succeeded");
+                        Log.getLogger().log(Level.FINE, "UserTest", "logout succeeded");
                         notifyFinished();
                     }
                 });
@@ -206,6 +206,7 @@ public class UserTest extends AsyncTestCase {
     }
 
     static int counter = 0;
+
     private Customer givenCustomer() throws Throwable {
         String email = uid + "-" + (++counter) + "@example.com";
         final Customer customer = customerRepo.createUser(email, userPassword);
@@ -231,11 +232,11 @@ public class UserTest extends AsyncTestCase {
                             @Override
                             public void onSuccess(AccessToken token, Customer currentUser) {
                                 notifyFinished();
-                           }
+                            }
 
                             @Override
                             public void onError(Throwable t) {
-                                Log.e("UserTest", "givenLoggedInCustomer failed", t);
+                                Log.getLogger().log(Level.SEVERE, "UserTest: " + "givenLoggedInCustomer failed", t);
                                 notifyFailed(t);
                             }
 

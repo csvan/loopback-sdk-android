@@ -1,9 +1,5 @@
 package com.strongloop.android.loopback.test;
 
-import android.os.Environment;
-import android.test.MoreAsserts;
-import android.util.Log;
-
 import com.google.common.io.Files;
 import com.strongloop.android.loopback.Container;
 import com.strongloop.android.loopback.ContainerRepository;
@@ -14,8 +10,6 @@ import com.strongloop.android.remoting.adapters.Adapter;
 import com.strongloop.android.remoting.adapters.RestContractItem;
 
 import junit.framework.AssertionFailedError;
-
-import org.apache.http.client.HttpResponseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
