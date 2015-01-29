@@ -1,7 +1,5 @@
 package com.strongloop.android.loopback.test;
 
-import android.content.Context;
-
 import com.strongloop.android.loopback.RestAdapter;
 
 public class RestAdapterTest extends AsyncTestCase {
@@ -10,8 +8,7 @@ public class RestAdapterTest extends AsyncTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        testContext.clearSharedPreferences(
-                RestAdapter.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        //testContext.clearSharedPreferences(RestAdapter.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         adapter = createRestAdapter();
     }
 
@@ -21,7 +18,7 @@ public class RestAdapterTest extends AsyncTestCase {
 
         // android-async-http client does not allow inspection of request headers
         // the workaround is to override the setter method
-        new RestAdapter(testContext, REST_SERVER_URL) {
+        new RestAdapter(REST_SERVER_URL) {
             @Override
             public void setAccessToken(String value) {
                 accessTokenRef[0] = value;
