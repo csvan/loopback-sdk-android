@@ -1,7 +1,5 @@
 package com.strongloop.android.remoting.adapters;
 
-import com.loopj.android.http.RequestParams;
-
 import java.io.InputStream;
 
 /**
@@ -22,7 +20,10 @@ public class StreamParam {
         this.contentType = contentType;
     }
 
+    // TODO: Find alternative way to implement this
+    /*
     public void putTo(RequestParams params, String key) {
         params.put(key, stream, fileName, contentType);
     }
+    */
 }
