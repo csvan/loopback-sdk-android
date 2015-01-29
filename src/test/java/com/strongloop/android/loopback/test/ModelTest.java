@@ -1,18 +1,18 @@
 package com.strongloop.android.loopback.test;
 
-import android.util.Log;
-
 import com.strongloop.android.loopback.Model;
 import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.ModelRepository;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 
+import com.strongloop.android.util.Log;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import static com.strongloop.android.loopback.test.TestHelpers.assertPropertyNames;
 
@@ -50,7 +50,7 @@ public class ModelTest extends AsyncTestCase {
                     @Override
                     public void onSuccess() {
                         lastId[0] = model.getId();
-                        Log.i("ModelTest", "id: " + model.getId());
+                        Log.getLogger().log(Level.FINE, "ModelTest", "id: " + model.getId());
                         assertNotNull(model.getId());
                         notifyFinished();
                     }
@@ -70,12 +70,12 @@ public class ModelTest extends AsyncTestCase {
                 repository.findById(lastId[0],
                         new ObjectTestCallback<Model>() {
 
-                    @Override
-                    public void onSuccess(Model model) {
-                        model.destroy(new VoidTestCallback());
-                    }
+                            @Override
+                            public void onSuccess(Model model) {
+                                model.destroy(new VoidTestCallback());
+                            }
 
-                });
+                        });
             }
         });
     }
@@ -135,17 +135,17 @@ public class ModelTest extends AsyncTestCase {
             ObjectCallback<Model> verify =
                     new ObjectTestCallback<Model>() {
 
-                @Override
-                public void onSuccess(Model model) {
-                    assertNotNull("No model found with id 2", model);
-                    assertTrue("Invalid class", (model instanceof Model));
-                    assertEquals("Invalid name", "Barfoo", model.get("name"));
-                    assertEquals("Invalid bars", 1, model.get("bars"));
+                        @Override
+                        public void onSuccess(Model model) {
+                            assertNotNull("No model found with id 2", model);
+                            assertTrue("Invalid class", (model instanceof Model));
+                            assertEquals("Invalid name", "Barfoo", model.get("name"));
+                            assertEquals("Invalid bars", 1, model.get("bars"));
 
-                    model.put("name", "Bar");
-                    model.save(new VoidTestCallback());
-                }
-            };
+                            model.put("name", "Bar");
+                            model.save(new VoidTestCallback());
+                        }
+                    };
 
             VoidCallback findAgain = new VoidTestCallback() {
 
@@ -158,13 +158,13 @@ public class ModelTest extends AsyncTestCase {
             ObjectCallback<Model> update =
                     new ObjectTestCallback<Model>() {
 
-                @Override
-                public void onSuccess(Model model) {
-                    assertNotNull("No model found with ID 2", model);
-                    model.put("name", "Barfoo");
-                    model.save(findAgain);
-                }
-            };
+                        @Override
+                        public void onSuccess(Model model) {
+                            assertNotNull("No model found with ID 2", model);
+                            model.put("name", "Barfoo");
+                            model.save(findAgain);
+                        }
+                    };
 
             @Override
             public void run() {
