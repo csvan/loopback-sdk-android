@@ -10,13 +10,13 @@ import com.strongloop.android.remoting.adapters.Adapter;
 import com.strongloop.android.remoting.adapters.RestContractItem;
 import com.strongloop.android.util.Log;
 import junit.framework.AssertionFailedError;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class FileTest extends AsyncTestCase {
     static final private String TAG = "FileTest";
@@ -45,7 +45,7 @@ public class FileTest extends AsyncTestCase {
         setupLocalDir();
     }
 
-    @Test
+    //@Test
     public void testContainerCreateAndGet() throws Throwable {
         final String name = "a-container-to-create";
 
@@ -80,7 +80,7 @@ public class FileTest extends AsyncTestCase {
         });
     }
 
-    @Test
+    //@Test
     public void testContainerGetAll() throws Throwable {
         final Container container = givenContainer(containerRepo);
 
@@ -102,7 +102,7 @@ public class FileTest extends AsyncTestCase {
         });
     }
 
-    @Test
+    //@Test
     public void testFileUpload() throws Throwable {
         final Container container = givenContainer(containerRepo);
         final String fileName = "a-file-name";
@@ -122,7 +122,7 @@ public class FileTest extends AsyncTestCase {
         });
     }
 
-    @Test
+    //@Test
     public void testFileDownload() throws Throwable {
         final File file = givenFile(containerRepo, binaryData);
         doAsyncTest(new AsyncTest() {
@@ -144,7 +144,7 @@ public class FileTest extends AsyncTestCase {
         });
     }
 
-    @Test
+    //@Test
     public void testFileGet() throws Throwable {
         final File file = givenFile(containerRepo, "a-file.txt");
         final Container container = file.getContainerRef();
@@ -164,7 +164,7 @@ public class FileTest extends AsyncTestCase {
         });
     }
 
-    @Test
+    //@Test
     public void testFileDelete() throws Throwable {
         final File file = givenFile(containerRepo, "a-file.txt");
         final Container container = file.getContainerRef();
@@ -200,7 +200,7 @@ public class FileTest extends AsyncTestCase {
         });
     }
 
-    @Test
+    //@Test
     public void testGetAllFiles() throws Throwable {
         final File file = givenFile(containerRepo, "a-file.txt");
         final Container container = file.getContainerRef();
@@ -226,7 +226,7 @@ public class FileTest extends AsyncTestCase {
         });
     }
 
-    @Test
+    //@Test
     public void testFileUploadFromLocalFile() throws Throwable {
         final Container container = givenContainer(containerRepo);
         final java.io.File local = givenLocalFile(binaryData);
@@ -249,7 +249,7 @@ public class FileTest extends AsyncTestCase {
         assertEquals(binaryData, content);
     }
 
-    @Test
+    //@Test
     public void testFileDownloadToLocalFile() throws Throwable {
         final File file = givenFile(containerRepo, binaryData);
         final java.io.File local = new java.io.File(localDir, "outfile");
