@@ -1,17 +1,9 @@
 package com.strongloop.android.loopback.test;
 
-import android.test.ActivityTestCase;
-
-import com.strongloop.android.loopback.Container;
-import com.strongloop.android.loopback.ContainerRepository;
-import com.strongloop.android.loopback.File;
-import com.strongloop.android.loopback.Model;
-import com.strongloop.android.loopback.ModelRepository;
-import com.strongloop.android.loopback.RestAdapter;
-import com.strongloop.android.loopback.test.helpers.TestContext;
+import com.strongloop.android.loopback.*;
 import com.strongloop.android.remoting.adapters.Adapter;
 import com.strongloop.android.remoting.adapters.Adapter.JsonObjectCallback;
-
+import junit.framework.TestCase;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -20,22 +12,19 @@ import java.util.Map;
 /**
  * Convenience class to easily perform asynchronous JUnit tests in Android.
  */
-public class AsyncTestCase extends ActivityTestCase {
+public class AsyncTestCase extends TestCase {
 
     // NOTE: "10.0.2.2" is the "localhost" of the Android emulator's
     // host computer.
     public static final String REST_SERVER_URL = "http://10.0.2.2:3000";
 
-    public TestContext testContext;
-
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        testContext = new TestContext(getInstrumentation());
     }
 
     protected RestAdapter createRestAdapter() {
-        return new RestAdapter(testContext, REST_SERVER_URL);
+        return new RestAdapter(REST_SERVER_URL);
     }
 
     public abstract class AsyncTest extends AsyncTask {
@@ -68,7 +57,9 @@ public class AsyncTestCase extends ActivityTestCase {
                         response.optString("data"));
                 notifyFinished();
             }
-        };
+        }
+
+        ;
     }
 
     public void doAsyncTest(final AsyncTest asyncTest) throws Throwable {
@@ -77,7 +68,8 @@ public class AsyncTestCase extends ActivityTestCase {
 
     public void await(final AsyncTask asyncTask) throws Throwable {
         AsyncTask.Runner runner = new AsyncTask.Runner(asyncTask);
-        runTestOnUiThread(runner);
+
+        //runTestOnUiThread(runner);
         runner.await();
     }
 
@@ -108,7 +100,7 @@ public class AsyncTestCase extends ActivityTestCase {
     }
 
     @SuppressWarnings("unchecked")
-    public<T extends Model> T fetchModelById(
+    public <T extends Model> T fetchModelById(
             final ModelRepository<T> repository, final Object id)
             throws Throwable {
 
@@ -147,7 +139,7 @@ public class AsyncTestCase extends ActivityTestCase {
 
     public File givenFile(final ContainerRepository repository, byte[] content)
             throws Throwable {
-       return givenFile(repository, "a-file", content);
+        return givenFile(repository, "a-file", content);
     }
 
     public File givenFile(final ContainerRepository repository, final String name)

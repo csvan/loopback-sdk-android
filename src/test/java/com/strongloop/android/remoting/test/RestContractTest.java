@@ -1,7 +1,5 @@
 package com.strongloop.android.remoting.test;
 
-import android.test.MoreAsserts;
-
 import com.google.common.collect.ImmutableMap;
 import com.strongloop.android.remoting.Repository;
 import com.strongloop.android.remoting.VirtualObject;
@@ -14,6 +12,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 public class RestContractTest extends AsyncTestCase {
     /**
@@ -213,8 +213,8 @@ public class RestContractTest extends AsyncTestCase {
             public void run() {
                 final Map filter =
                         ImmutableMap.of("where",
-                            ImmutableMap.of("age",
-                                    ImmutableMap.of("gt", 21)));
+                                ImmutableMap.of("age",
+                                        ImmutableMap.of("gt", 21)));
 
                 adapter.invokeStaticMethod(
                         "contract.list",
@@ -229,7 +229,7 @@ public class RestContractTest extends AsyncTestCase {
         doAsyncTest(new AsyncTest() {
             @Override
             public void run() {
-                RestAdapter customAdapter = new RestAdapter(getActivity(), REST_SERVER_URL) {
+                RestAdapter customAdapter = new RestAdapter(REST_SERVER_URL) {
                     {
                         this.getClient().addHeader("Authorization", "auth-token");
                     }
@@ -255,7 +255,7 @@ public class RestContractTest extends AsyncTestCase {
                             public void onSuccess(byte[] response, String contentType) {
                                 // The values are hard-coded in test-server/contract.js
                                 assertEquals("application/octet-stream", contentType);
-                                MoreAsserts.assertEquals(new byte[]{1, 2, 3}, response);
+                                assertEquals(new byte[]{1, 2, 3}, response);
                                 notifyFinished();
                             }
 

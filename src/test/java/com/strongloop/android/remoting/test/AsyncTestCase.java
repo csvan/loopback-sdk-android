@@ -1,11 +1,8 @@
 package com.strongloop.android.remoting.test;
 
-import android.content.Context;
-import android.test.ActivityTestCase;
-
 import com.strongloop.android.remoting.adapters.Adapter.JsonObjectCallback;
 import com.strongloop.android.remoting.adapters.RestAdapter;
-
+import junit.framework.TestCase;
 import org.json.JSONObject;
 
 import java.util.concurrent.CountDownLatch;
@@ -14,21 +11,21 @@ import java.util.concurrent.TimeUnit;
 /**
  * Convenience class to easily perform asynchronous JUnit tests in Android.
  */
-public class AsyncTestCase extends ActivityTestCase {
+public class AsyncTestCase extends TestCase {
 
     // NOTE: "10.0.2.2" is the "localhost" of the Android emulator's host computer.
     public static final String REST_SERVER_URL = "http://10.0.2.2:3001";
 
-    public Context testContext;
+    //public Context testContext;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        testContext = getActivity();
+        //testContext = getActivity();
     }
 
     protected RestAdapter createRestAdapter() {
-        return new RestAdapter(testContext, REST_SERVER_URL);
+        return new RestAdapter(REST_SERVER_URL);
     }
 
     public abstract class AsyncTest implements Runnable {
@@ -81,12 +78,12 @@ public class AsyncTestCase extends ActivityTestCase {
                         response.optString("data"));
                 notifyFinished();
             }
-        };
+        }
     }
 
     public void doAsyncTest(final AsyncTest asyncTest) throws Throwable {
         TestRunner runner = new TestRunner(asyncTest);
-        runTestOnUiThread(runner);
+        //runTestOnUiThread(runner);
 
         boolean success = runner.await();
         if (runner.getUncaughtException() != null) {
@@ -113,8 +110,7 @@ public class AsyncTestCase extends ActivityTestCase {
         public void run() {
             try {
                 asyncTest.run();
-            }
-            catch (Throwable t) {
+            } catch (Throwable t) {
                 uncaughtException = t;
             }
         }
@@ -122,8 +118,7 @@ public class AsyncTestCase extends ActivityTestCase {
         public boolean await() {
             try {
                 signal.await(30, TimeUnit.SECONDS);
-            }
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
             }
             return signal.getCount() == 0;
         }

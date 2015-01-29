@@ -1,14 +1,10 @@
 package com.strongloop.android.remoting.test;
 
-import android.test.MoreAsserts;
-
 import com.google.common.collect.ImmutableSet;
-import com.google.common.util.concurrent.MoreExecutors;
 import com.strongloop.android.remoting.BeanUtil;
 import com.strongloop.android.remoting.Repository;
 import com.strongloop.android.remoting.Transient;
 import com.strongloop.android.remoting.VirtualObject;
-
 import junit.framework.TestCase;
 
 import java.util.HashMap;
@@ -126,10 +122,14 @@ public class BeanUtilTest extends TestCase {
         private String trans;
 
         @Transient
-        public String getTrans() { return trans; }
+        public String getTrans() {
+            return trans;
+        }
 
         @Transient
-        public void setTrans(String trans) { this.trans = trans; }
+        public void setTrans(String trans) {
+            this.trans = trans;
+        }
     }
 
     public void testBean() {
@@ -155,11 +155,11 @@ public class BeanUtilTest extends TestCase {
         // Test Map with different types (short->int, etc).
         properties = new HashMap<String, Object>();
         properties.put("name", "Fred");
-        properties.put("age", (short)100);
+        properties.put("age", (short) 100);
         properties.put("totallyCool", true);
-        properties.put("answerToAgeOfUniverse", (long)42);
-        properties.put("weight", (int)9000);
-        properties.put("score", (int)-100);
+        properties.put("answerToAgeOfUniverse", (long) 42);
+        properties.put("weight", (int) 9000);
+        properties.put("score", (int) -100);
 
         Bean bean3 = new Bean();
         BeanUtil.setProperties(bean3, properties, true);
@@ -171,9 +171,8 @@ public class BeanUtilTest extends TestCase {
         source.setTrans("transient value");
 
         Map<String, Object> properties = BeanUtil.getProperties(source, false, true);
-        MoreAsserts.assertEquals(
-                "getProperties() should have ignored @Transient properties",
-                new HashMap<String, Object>().entrySet(), properties.entrySet());
+
+        assertEquals("getProperties() should have ignored @Transient properties", new HashMap<String, Object>().entrySet(), properties.entrySet());
 
         properties.put("trans", source.getTrans());
 
@@ -197,6 +196,6 @@ public class BeanUtilTest extends TestCase {
 
     public void testVirtualObjectHasTransientPropertiesOnly() {
         VirtualObject obj = new VirtualObject();
-        MoreAsserts.assertEmpty(BeanUtil.getProperties(obj, true, true));
+        assertTrue(BeanUtil.getProperties(obj, true, true).isEmpty());
     }
 }

@@ -7,6 +7,8 @@ import com.strongloop.android.remoting.adapters.RestAdapter;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertTrue;
+
 public class RestAdapterTest extends AsyncTestCase {
 
     /**
