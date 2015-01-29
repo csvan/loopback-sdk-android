@@ -139,7 +139,7 @@ public class UserTest extends AsyncTestCase {
         assertNull(customerRepo.getCurrentUserId());
     }
 
-    @Test
+    //@Test
     public void testCurrentUserIdIsStoredInSharedPreferences() throws Throwable {
         Customer customer = givenLoggedInCustomer();
         CustomerRepository anotherRepo = adapter.createRepository(
