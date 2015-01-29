@@ -2,10 +2,9 @@
 
 package com.strongloop.android.remoting;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.strongloop.android.remoting.adapters.Adapter;
+
+import java.util.Map;
 
 /**
  * A local representative of a single virtual object. The behavior of this
@@ -98,8 +97,7 @@ public class VirtualObject {
                     "Repository adapter cannot be null");
         }
         String path = repository.getClassName() + ".prototype." + method;
-        adapter.invokeInstanceMethod(path, creationParameters, parameters,
-        		callback);
+        adapter.invokeInstanceMethod(path, creationParameters, parameters, callback);
     }
 
     /**

@@ -1,11 +1,10 @@
 package com.strongloop.android.loopback.test;
 
 import com.strongloop.android.loopback.Model;
-import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.ModelRepository;
+import com.strongloop.android.loopback.RestAdapter;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
-
 import com.strongloop.android.util.Log;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -34,7 +33,7 @@ public class ModelTest extends AsyncTestCase {
     public void testCreateAndRemove() throws Throwable {
         final Object[] lastId = new Object[1];
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("name", "Foobar");
         params.put("bars", 1);
 
@@ -60,6 +59,7 @@ public class ModelTest extends AsyncTestCase {
                 });
             }
         });
+
         assertNotNull(lastId[0]);
 
         JSONObject remoteJson = fetchJsonObjectById(repository, lastId[0]);

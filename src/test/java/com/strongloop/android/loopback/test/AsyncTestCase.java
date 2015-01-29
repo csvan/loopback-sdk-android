@@ -70,7 +70,7 @@ public class AsyncTestCase {
 
     public void await(final AsyncTask asyncTask) throws Throwable {
         AsyncTask.Runner runner = new AsyncTask.Runner(asyncTask);
-
+        runner.run();
         //runTestOnUiThread(runner);
         runner.await();
     }

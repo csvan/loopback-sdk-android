@@ -2,15 +2,14 @@
 
 package com.strongloop.android.loopback;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONObject;
-
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 import com.strongloop.android.remoting.Repository;
 import com.strongloop.android.remoting.VirtualObject;
 import com.strongloop.android.remoting.adapters.Adapter;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A local representative of a single model instance on the server. The data is
@@ -98,8 +97,7 @@ public class Model extends VirtualObject {
      * @param callback The callback to be executed when finished.
      */
     public void save(final VoidCallback callback) {
-        invokeMethod(id == null ? "create" : "save", toMap(),
-                new Adapter.JsonObjectCallback() {
+        invokeMethod(id == null ? "create" : "save", toMap(), new Adapter.JsonObjectCallback() {
 
             @Override
             public void onError(Throwable t) {

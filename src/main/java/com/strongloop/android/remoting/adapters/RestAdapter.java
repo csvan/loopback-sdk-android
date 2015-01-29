@@ -384,17 +384,17 @@ public class RestAdapter extends Adapter {
             }
 
             if ("GET".equalsIgnoreCase(method)) {
-                request.execute();
+                request.execute(httpCallback);
                 //get(context, url, headers, null, httpCallback);
             } else if ("DELETE".equalsIgnoreCase(method)) {
-                request.execute();
+                request.execute(httpCallback);
                 //delete(context, url, headers, httpCallback);
             } else if ("POST".equalsIgnoreCase(method)) {
                 request.addHeader("Content-Type", contentType);
-                request.execute();
+                request.execute(httpCallback);
             } else if ("PUT".equalsIgnoreCase(method)) {
                 request.addHeader("Content-Type", contentType);
-                request.execute();
+                request.execute(httpCallback);
             } else {
                 throw new IllegalArgumentException("Illegal method: " + method + ". Only GET, POST, PUT, DELETE supported.");
             }
