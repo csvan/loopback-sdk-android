@@ -2,10 +2,7 @@
 
 package com.strongloop.android.remoting.adapters;
 
-import com.ning.http.client.AsyncCompletionHandler;
-import com.ning.http.client.AsyncCompletionHandlerBase;
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.Response;
+import com.ning.http.client.*;
 import com.ning.http.client.multipart.FilePart;
 import com.strongloop.android.remoting.JsonUtil;
 import com.strongloop.android.util.Log;
@@ -198,7 +195,19 @@ public class RestAdapter extends Adapter {
         client.request(verb, path, parameters, parameterEncoding, responseHandler);
     }
 
-    class CallbackHandler extends AsyncCompletionHandlerBase {
+    class AsyncCompletionHandlerWithStatusCorrection extends AsyncCompletionHandlerBase {
+
+        @Override
+        public STATE onStatusReceived(HttpResponseStatus status) throws Exception {
+            if (status.getStatusCode() == 500) {
+                return STATE.ABORT;
+            } else {
+                return super.onStatusReceived(status);
+            }
+        }
+    }
+
+    class CallbackHandler extends AsyncCompletionHandlerWithStatusCorrection {
         private final Callback callback;
 
         public CallbackHandler(Callback callback) {
@@ -227,7 +236,7 @@ public class RestAdapter extends Adapter {
         }
     }
 
-    class BinaryHandler extends AsyncCompletionHandlerBase {
+    class BinaryHandler extends AsyncCompletionHandlerWithStatusCorrection {
         private final BinaryCallback callback;
 
         public BinaryHandler(BinaryCallback callback) {

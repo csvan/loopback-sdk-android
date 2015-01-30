@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -132,7 +133,7 @@ public class FileTest extends AsyncTestCase {
                 file.download(new File.DownloadCallback() {
                     @Override
                     public void onSuccess(byte[] content, String contentType) {
-                        assertEquals(binaryData, content);
+                        assertArrayEquals(binaryData, content);
                         notifyFinished();
                     }
 
