@@ -202,7 +202,7 @@ public class FileTest extends AsyncTestCase {
         });
     }
 
-    //@Test
+    @Test
     public void testGetAllFiles() throws Throwable {
         final File file = givenFile(containerRepo, "a-file.txt");
         final Container container = file.getContainerRef();
@@ -228,7 +228,7 @@ public class FileTest extends AsyncTestCase {
         });
     }
 
-    //@Test
+    @Test
     public void testFileUploadFromLocalFile() throws Throwable {
         final Container container = givenContainer(containerRepo);
         final java.io.File local = givenLocalFile(binaryData);
@@ -248,10 +248,10 @@ public class FileTest extends AsyncTestCase {
 
         Log.getLogger().info("Downloading the uploaded file");
         byte[] content = download(container, local.getName());
-        assertEquals(binaryData, content);
+        assertArrayEquals(binaryData, content);
     }
 
-    //@Test
+    @Test
     public void testFileDownloadToLocalFile() throws Throwable {
         final File file = givenFile(containerRepo, binaryData);
         final java.io.File local = new java.io.File(localDir, "outfile");
@@ -264,7 +264,7 @@ public class FileTest extends AsyncTestCase {
                     public void onSuccess() {
                         try {
                             byte[] content = Files.toByteArray(local);
-                            assertEquals(binaryData, content);
+                            assertArrayEquals(binaryData, content);
                             notifyFinished();
                         } catch (IOException ex) {
                             notifyFailed(ex);
