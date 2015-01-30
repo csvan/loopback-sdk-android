@@ -27,8 +27,6 @@ public class RestAdapterTest extends AsyncTestCase {
 
     @Before
     public void setUp() throws Exception {
-        // NOTE: "10.0.2.2" is the "localhost" of the Android emulator's
-        // host computer.
         adapter = createRestAdapter();
         testClass = new Repository("SimpleClass");
         testClass.setAdapter(adapter);

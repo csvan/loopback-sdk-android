@@ -79,7 +79,8 @@ public class AsyncTestCase {
 
     public void doAsyncTest(final AsyncTest asyncTest) throws Throwable {
         TestRunner runner = new TestRunner(asyncTest);
-        //runTestOnUiThread(runner);
+
+        runner.run();
 
         boolean success = runner.await();
         if (runner.getUncaughtException() != null) {
