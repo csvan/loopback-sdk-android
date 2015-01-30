@@ -1,5 +1,10 @@
 package com.strongloop.android.remoting.adapters;
 
+import com.ning.http.client.AsyncHttpClient;
+import com.ning.http.client.multipart.ByteArrayPart;
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -20,10 +25,9 @@ public class StreamParam {
         this.contentType = contentType;
     }
 
-    // TODO: Find alternative way to implement this
-    /*
-    public void putTo(RequestParams params, String key) {
-        params.put(key, stream, fileName, contentType);
+    public void putTo(AsyncHttpClient.BoundRequestBuilder requestBuilder, String key) throws IOException {
+        byte[] bytes = IOUtils.toByteArray(stream);
+        ByteArrayPart arrayPart = new ByteArrayPart(key, bytes, contentType, null, fileName);
+        requestBuilder.addBodyPart(arrayPart);
     }
-    */
 }

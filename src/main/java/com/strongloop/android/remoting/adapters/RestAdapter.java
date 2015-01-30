@@ -6,11 +6,13 @@ import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.AsyncCompletionHandlerBase;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
+import com.ning.http.client.multipart.FilePart;
 import com.strongloop.android.remoting.JsonUtil;
 import com.strongloop.android.util.Log;
 import org.json.JSONException;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -356,10 +358,27 @@ public class RestAdapter extends Adapter {
                                 "RestAdapter does not support multipart PUT requests");
                     }
 
-                    // TODO: Implement multiform support
-                    throw new NotImplementedException();
-                    //requestParams = buildRequestParameters(flattenParameters(parameters));
-
+                    for (Map.Entry<String, ? extends Object> entry : parameters.entrySet()) {
+                        Object value = entry.getValue();
+                        if (value != null) {
+                            if (value instanceof java.io.File) {
+                                request.addBodyPart(new FilePart(entry.getKey(), (File) value));
+                            } else if (value instanceof StreamParam) {
+                                try {
+                                    ((StreamParam) value).putTo(request, entry.getKey());
+                                } catch (IOException e) {
+                                    // TODO: Handle this in a better way. Should not continue.
+                                    e.printStackTrace();
+                                }
+                            } else if (value instanceof String) {
+                                request.addFormParam(entry.getKey(), (String) entry.getValue());
+                            } else {
+                                throw new IllegalArgumentException(
+                                        "Unknown param type for RequestParams: "
+                                                + value.getClass().getName());
+                            }
+                        }
+                    }
                 } else if (parameterEncoding == ParameterEncoding.JSON) {
                     contentType = "application/json; charset=" + charset;
                     String s = "";
@@ -482,32 +501,5 @@ public class RestAdapter extends Adapter {
         public void removeHeader(String key) {
             headers.remove(key);
         }
-
-        /*
-        static protected RequestParams buildRequestParameters(Map<String, ? extends Object> parameters)
-                throws FileNotFoundException {
-
-            RequestParams requestParams = new RequestParams();
-
-            for (Map.Entry<String, ? extends Object> entry : parameters.entrySet()) {
-                Object value = entry.getValue();
-                if (value != null) {
-                    if (value instanceof java.io.File) {
-                        requestParams.put(entry.getKey(), (java.io.File) value);
-                    } else if (value instanceof StreamParam) {
-                        ((StreamParam) value).putTo(requestParams, entry.getKey());
-                    } else if (value instanceof String) {
-                        requestParams.put(entry.getKey(), (String) entry.getValue());
-                    } else {
-                        throw new IllegalArgumentException(
-                                "Unknown param type for RequestParams: "
-                                        + value.getClass().getName());
-                    }
-                }
-            }
-
-            return requestParams;
-        }
-        */
     }
 }
