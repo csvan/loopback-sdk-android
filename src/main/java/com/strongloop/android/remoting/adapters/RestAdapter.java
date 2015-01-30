@@ -157,8 +157,6 @@ public class RestAdapter extends Adapter {
         invokeInstanceMethod(method, constructorParameters, parameters, httpHandler);
     }
 
-    ;
-
     private void invokeInstanceMethod(String method,
                                       Map<String, ? extends Object> constructorParameters,
                                       Map<String, ? extends Object> parameters,

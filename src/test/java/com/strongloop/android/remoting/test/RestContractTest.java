@@ -8,11 +8,13 @@ import com.strongloop.android.remoting.adapters.RestAdapter;
 import com.strongloop.android.remoting.adapters.RestContract;
 import com.strongloop.android.remoting.adapters.RestContractItem;
 import org.json.JSONObject;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class RestContractTest extends AsyncTestCase {
@@ -28,7 +30,7 @@ public class RestContractTest extends AsyncTestCase {
     private RestAdapter adapter;
     private Repository testClass;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         adapter = createRestAdapter();
 
@@ -265,7 +267,7 @@ public class RestContractTest extends AsyncTestCase {
                             public void onSuccess(byte[] response, String contentType) {
                                 // The values are hard-coded in test-server/contract.js
                                 assertEquals("application/octet-stream", contentType);
-                                assertEquals(new byte[]{1, 2, 3}, response);
+                                assertArrayEquals(new byte[]{1, 2, 3}, response);
                                 notifyFinished();
                             }
 
