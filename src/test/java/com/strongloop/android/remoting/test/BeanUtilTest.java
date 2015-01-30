@@ -5,12 +5,14 @@ import com.strongloop.android.remoting.BeanUtil;
 import com.strongloop.android.remoting.Repository;
 import com.strongloop.android.remoting.Transient;
 import com.strongloop.android.remoting.VirtualObject;
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BeanUtilTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class BeanUtilTest {
 
     public static class Bean extends VirtualObject {
         private String name;
@@ -132,6 +134,7 @@ public class BeanUtilTest extends TestCase {
         }
     }
 
+    @Test
     public void testBean() {
         Bean fromBean = new Bean();
         fromBean.setName("Fred");
@@ -166,6 +169,7 @@ public class BeanUtilTest extends TestCase {
         assertEquals(fromBean, bean3);
     }
 
+    @Test
     public void testTransient() {
         Trans source = new Trans();
         source.setTrans("transient value");
@@ -183,6 +187,7 @@ public class BeanUtilTest extends TestCase {
                 target.getTrans());
     }
 
+    @Test
     public void testGetPropertiesReturnsOwnPropertiesOnly() {
         Bean bean = new Bean();
         Map<String, Object> ownProperties = BeanUtil.getProperties(bean,
@@ -194,6 +199,7 @@ public class BeanUtilTest extends TestCase {
                 ownProperties.keySet());
     }
 
+    @Test
     public void testVirtualObjectHasTransientPropertiesOnly() {
         VirtualObject obj = new VirtualObject();
         assertTrue(BeanUtil.getProperties(obj, true, true).isEmpty());
