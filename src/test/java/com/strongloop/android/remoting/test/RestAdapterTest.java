@@ -3,6 +3,8 @@ package com.strongloop.android.remoting.test;
 import com.strongloop.android.remoting.Repository;
 import com.strongloop.android.remoting.VirtualObject;
 import com.strongloop.android.remoting.adapters.RestAdapter;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,9 +25,8 @@ public class RestAdapterTest extends AsyncTestCase {
     private RestAdapter adapter;
     private Repository testClass;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         // NOTE: "10.0.2.2" is the "localhost" of the Android emulator's
         // host computer.
         adapter = createRestAdapter();
@@ -33,10 +34,12 @@ public class RestAdapterTest extends AsyncTestCase {
         testClass.setAdapter(adapter);
     }
 
+    @Test
     public void testConnected() {
         assertTrue(adapter.isConnected());
     }
 
+    @Test
     public void testGet() throws Throwable {
         doAsyncTest(new AsyncTest() {
 
@@ -48,6 +51,7 @@ public class RestAdapterTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testTransform() throws Throwable {
         doAsyncTest(new AsyncTest() {
 
@@ -60,7 +64,7 @@ public class RestAdapterTest extends AsyncTestCase {
         });
     }
 
-
+    @Test
     public void testTestClassGet() throws Throwable {
         doAsyncTest(new AsyncTest() {
 
@@ -74,6 +78,7 @@ public class RestAdapterTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testTestClassTransform() throws Throwable {
         doAsyncTest(new AsyncTest() {
 
@@ -87,6 +92,7 @@ public class RestAdapterTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testPrototypeStatic() throws Throwable {
         doAsyncTest(new AsyncTest() {
 
@@ -98,6 +104,7 @@ public class RestAdapterTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testPrototypeGet() throws Throwable {
         doAsyncTest(new AsyncTest() {
 
@@ -111,6 +118,7 @@ public class RestAdapterTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testPrototypeTransform() throws Throwable {
         doAsyncTest(new AsyncTest() {
 

@@ -7,8 +7,8 @@ import com.strongloop.android.remoting.adapters.Adapter;
 import com.strongloop.android.remoting.adapters.RestAdapter;
 import com.strongloop.android.remoting.adapters.RestContract;
 import com.strongloop.android.remoting.adapters.RestContractItem;
-
 import org.json.JSONObject;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,8 +29,7 @@ public class RestContractTest extends AsyncTestCase {
     private Repository testClass;
 
     @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    public void setUp() throws Exception {
         adapter = createRestAdapter();
 
         final RestContract contract = adapter.getContract();
@@ -61,6 +60,7 @@ public class RestContractTest extends AsyncTestCase {
         testClass.setAdapter(adapter);
     }
 
+    @Test
     public void testAddItemsFromContract() {
         RestContract parent = new RestContract();
         RestContract child = new RestContract();
@@ -84,6 +84,7 @@ public class RestContractTest extends AsyncTestCase {
                 parent.getVerbForMethod("new.route"));
     }
 
+    @Test
     public void testGet() throws Throwable {
         doAsyncTest(new AsyncTest() {
 
@@ -95,6 +96,7 @@ public class RestContractTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testTransform() throws Throwable {
         doAsyncTest(new AsyncTest() {
 
@@ -107,7 +109,7 @@ public class RestContractTest extends AsyncTestCase {
         });
     }
 
-
+    @Test
     public void testTestClassGet() throws Throwable {
         doAsyncTest(new AsyncTest() {
 
@@ -120,6 +122,7 @@ public class RestContractTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testTestClassTransform() throws Throwable {
         doAsyncTest(new AsyncTest() {
 
@@ -133,6 +136,7 @@ public class RestContractTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testPrototypeStatic() throws Throwable {
         doAsyncTest(new AsyncTest() {
 
@@ -144,6 +148,7 @@ public class RestContractTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testPrototypeGet() throws Throwable {
         doAsyncTest(new AsyncTest() {
 
@@ -157,6 +162,7 @@ public class RestContractTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testPrototypeTransform() throws Throwable {
         doAsyncTest(new AsyncTest() {
 
@@ -171,6 +177,7 @@ public class RestContractTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testNestedParameterObjectsAreFlattened() throws Throwable {
         doAsyncTest(new AsyncTest() {
             @Override
@@ -202,6 +209,7 @@ public class RestContractTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testDeeplyNestedParameterObjectsAreFlattened() throws Throwable {
         // In this test, we do not check for the exact value of query-string,
         // but ensure that the value created by the android library
@@ -225,6 +233,7 @@ public class RestContractTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testCustomRequestHeader() throws Throwable {
         doAsyncTest(new AsyncTest() {
             @Override
@@ -245,6 +254,7 @@ public class RestContractTest extends AsyncTestCase {
         });
     }
 
+    @Test
     public void testBinaryResponseBody() throws Throwable {
         doAsyncTest(new AsyncTest() {
             @Override

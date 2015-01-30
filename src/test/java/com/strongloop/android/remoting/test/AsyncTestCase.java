@@ -2,27 +2,20 @@ package com.strongloop.android.remoting.test;
 
 import com.strongloop.android.remoting.adapters.Adapter.JsonObjectCallback;
 import com.strongloop.android.remoting.adapters.RestAdapter;
-import junit.framework.TestCase;
 import org.json.JSONObject;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.Assert.*;
+
 /**
  * Convenience class to easily perform asynchronous JUnit tests in Android.
  */
-public class AsyncTestCase extends TestCase {
+public class AsyncTestCase {
 
     // NOTE: "10.0.2.2" is the "localhost" of the Android emulator's host computer.
     public static final String REST_SERVER_URL = "http://10.0.2.2:3001";
-
-    //public Context testContext;
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        //testContext = getActivity();
-    }
 
     protected RestAdapter createRestAdapter() {
         return new RestAdapter(REST_SERVER_URL);
@@ -79,6 +72,10 @@ public class AsyncTestCase extends TestCase {
                 notifyFinished();
             }
         }
+    }
+
+    public void setUp() throws Exception {
+
     }
 
     public void doAsyncTest(final AsyncTest asyncTest) throws Throwable {
