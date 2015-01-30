@@ -1,21 +1,21 @@
 package com.strongloop.android.remoting.test;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import junit.framework.TestCase;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.strongloop.android.remoting.JsonUtil;
 import com.strongloop.android.remoting.adapters.Adapter;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.junit.Test;
 
-public class JsonUtilTest extends TestCase {
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
+
+public class JsonUtilTest {
 
     private void doPlainObjectToJsonTest(Object object) throws JSONException {
         assertEquals(object, JsonUtil.toJson(object));
@@ -32,6 +32,7 @@ public class JsonUtilTest extends TestCase {
         fail("Object conversion should throw an exception: " + object);
     }
 
+    @Test
     public void testPrimitives() throws JSONException {
         assertEquals(JSONObject.NULL, JsonUtil.toJson(null));
 
@@ -65,6 +66,7 @@ public class JsonUtilTest extends TestCase {
         assertNull(JsonUtil.fromJson((JSONObject)null));
     }
 
+    @Test
     public void testObjectsAndArrays() throws JSONException {
         Map<?, ?> fromMap = ImmutableMap.of(
                 "name", "fred",
@@ -93,6 +95,16 @@ public class JsonUtilTest extends TestCase {
             Map<?,?> json1 = JsonUtil.fromJson((JSONObject)obj1);
             Map<?,?> json2 = JsonUtil.fromJson((JSONObject)obj2);
             assertEquals(message, json1, json2);
+        } else if (obj1 instanceof JSONArray && obj2 instanceof JSONArray) {
+
+            List<Object> array1 = JsonUtil.fromJson((JSONArray) obj1);
+            List<Object> array2 = JsonUtil.fromJson((JSONArray) obj2);
+
+            assertEquals(array1.size(), array2.size());
+
+            for(int i = 0; i < array1.size(); i++) {
+                assertEquals(array1.get(i), array2.get(i));
+            }
         }
         else {
             assertEquals(message, obj1, obj2);
@@ -111,8 +123,7 @@ public class JsonUtilTest extends TestCase {
 
             @Override
             public void onSuccess(Object response) {
-                assertJsonEquals("Parse error for json string: " + jsonString,
-                        response, expectedValue);
+                assertJsonEquals("Parse error for json string: " + jsonString, response, expectedValue);
             }
         };
         callback.onSuccess(jsonString);
@@ -209,6 +220,7 @@ public class JsonUtilTest extends TestCase {
         callback.onSuccess(jsonString);
     }
 
+    @Test
     public void testJsonParsingInCallbacks() throws JSONException {
         JSONObject object = new JSONObject();
         object.put("name", "fred");
