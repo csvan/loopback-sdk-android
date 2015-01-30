@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class AsyncTestCase {
 
     // NOTE: "10.0.2.2" is the "localhost" of the Android emulator's host computer.
-    public static final String REST_SERVER_URL = "http://10.0.2.2:3001";
+    public static final String REST_SERVER_URL = "http://0.0.0.0:3000";
 
     protected RestAdapter createRestAdapter() {
         return new RestAdapter(REST_SERVER_URL);
