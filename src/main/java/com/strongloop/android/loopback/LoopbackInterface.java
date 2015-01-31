@@ -3,6 +3,8 @@ package com.strongloop.android.loopback;
 import com.strongloop.android.loopback.callbacks.TypedCallback;
 import org.atteo.evo.inflector.English;
 
+import java.io.*;
+import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +25,70 @@ public class LoopbackInterface {
 
     public static LoopbackInterface getDefault(String url) {
         return new LoopbackInterface(url);
+    }
+
+    /**
+     * Asynchronously creates a new interface for a Loopback server, loading all necessary
+     * settings from a config file. If user data is provided, the setup process will attempt
+     * to log the user in as well. In this case, setup will fail if login is not succesful.
+     *
+     * @param configFile the configuration dile
+     * @param callback   callback to execute when the setup is done.
+     */
+    public static void createFromConfigFileAsync(final java.io.File configFile, final TypedCallback<LoopbackInterface> callback) {
+
+        Runnable task = new Runnable() {
+
+            @Override
+            public void run() {
+                Properties prop = new Properties();
+
+                FileReader reader = null;
+
+                try {
+                    reader = new FileReader(configFile);
+                    prop.load(reader);
+
+                    String baseurl = prop.getProperty("baseurl", null);
+                    String username = prop.getProperty("username", null);
+                    String password = prop.getProperty("password", null);
+
+                    if (baseurl == null || baseurl.isEmpty()) {
+                        callback.onError(new LoopbackException("Invalid base URL: " + baseurl));
+                    } else if (username == null || username.isEmpty()) {
+                        callback.onError(new LoopbackException("Bad username: " + username));
+                    } else if (username == null || username.isEmpty()) {
+                        callback.onError(new LoopbackException("Password is undefined"));
+                    } else {
+                        final LoopbackInterface loopbackInterface = getDefault(baseurl);
+
+                        loopbackInterface.loginAsync(username, password, new TypedCallback<User>() {
+                            @Override
+                            public void onSuccess(User object) {
+                                callback.onSuccess(loopbackInterface);
+                            }
+
+                            @Override
+                            public void onError(Throwable t) {
+                                callback.onError(t);
+                            }
+                        });
+                    }
+                } catch (IOException ex) {
+                    callback.onError(ex);
+                } finally {
+                    if (reader != null) {
+                        try {
+                            reader.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        };
+
+        task.run();
     }
 
     private LoopbackInterface(String url) {
